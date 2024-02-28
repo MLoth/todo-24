@@ -3,7 +3,11 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
 
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'dm-sans': ['DM Sans', 'sans-serif'],
+      },
+    },
   },
 
   plugins: [],
