@@ -1,3 +1,5 @@
+import { version } from '../../package.json'
+
 export const AppFooter = () => (
   <footer className="py-6">
     <p className="text-neutral-400 text-sm">
@@ -7,5 +9,6 @@ export const AppFooter = () => (
       </a>{' '}
       - {new Date().getFullYear()} &copy;
     </p>
+    <p className="font-mono text-xs text-neutral-400">v{version}</p>
   </footer>
 )

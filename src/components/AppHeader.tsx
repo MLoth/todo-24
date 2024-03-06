@@ -1,22 +1,28 @@
-export const AppHeader = ({ todoCount }: { todoCount: number }) => {
+export const AppHeader = ({
+  title,
+  todoCount,
+}: {
+  title: string
+  todoCount?: number
+}) => {
   const welcomeMessage = () => {
-    if (todoCount === 1) {
-      return <>You have 1 todo left.</>
-    } else {
-      return (
-        <>
-          You have <span className="font-bold">{todoCount} todos</span> left.
-        </>
-      )
-    }
+    if (todoCount === undefined || todoCount === null) return null
+    if (todoCount === 1)
+      return <p className="text-neutral-500">You have 1 todo left.</p>
+
+    return (
+      <p className="text-neutral-500">
+        You have <span className="font-bold">{todoCount} todos</span> left.
+      </p>
+    )
   }
 
   return (
     <header className="mb-3 pt-12 pb-6">
       <h1 className="text-4xl font-bold text-neutral-800 dark:text-white">
-        Hello, Marty!
+        {title}
       </h1>
-      <p className="text-neutral-500">{welcomeMessage()}</p>
+      {welcomeMessage()}
     </header>
   )
 }

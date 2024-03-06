@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Check, ChevronDown, Plus, Trash } from 'lucide-react'
+import { Check, ChevronDown, Plus, Settings, Trash } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
 import { AppFooter } from '../components/AppFooter'
 import { AppHeader } from '../components/AppHeader'
 import { uid } from 'uid'
+import { Link } from 'react-router-dom'
 
 export const TodoOverview = () => {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -33,7 +34,15 @@ export const TodoOverview = () => {
   return (
     <div className="flex flex-col min-h-screen mx-auto max-w-2xl px-6">
       {/* Header: amount of todo & welcome message */}
-      <AppHeader todoCount={todos.length} />
+      <div className="flex items-center justify-between">
+        <AppHeader title="Hello, Marty!" todoCount={todos.length} />
+        <Link
+          className="border border-neutral-200 bg-neutral-100 rounded-full p-2 text-neutral-400"
+          to="/settings"
+        >
+          <Settings />
+        </Link>
+      </div>
 
       <div className="flex-1">
         <form
@@ -92,10 +101,10 @@ export const TodoOverview = () => {
             >
               <input className="sr-only peer" type="checkbox" id={todo.id} />
               <label
-                className="flex items-center justify-center peer-checked:bg-blue-500 peer-checked:text-blue-100 rounded-full cursor-pointer p-2 border border-neutral-200 focus:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 focus:border-transparent hover:text-white hover:bg-blue-100"
+                className="flex items-center justify-center peer-checked:bg-blue-500 peer-checked:text-blue-100 rounded-full cursor-pointer p-2 border border-neutral-200 focus:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 focus:border-transparent hover:text-blue-500 hover:bg-blue-100 text-neutral-200"
                 htmlFor={todo.id}
               >
-                <Check className="stroke-current" />
+                <Check className="stroke-current stroke-4" />
               </label>
               <div className="flex-1">
                 <p>{todo.task}</p>
