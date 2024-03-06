@@ -88,7 +88,10 @@ export const TodoOverview = () => {
           onSubmit={addNewTodo}
         >
           <div className="flex items-center">
-            <button className="h-auto rounded-full p-2 border border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent hover:text-white hover:bg-blue-500">
+            <button
+              className="h-auto rounded-full p-2 border border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent hover:text-white hover:bg-blue-500 disabled:opacity-10 disabled:cursor-not-allowed"
+              disabled={!isValid.task.valid || !isValid.category.valid}
+            >
               <Plus className="stroke-current" />
               <span className="sr-only">Add todo</span>
             </button>
@@ -103,6 +106,13 @@ export const TodoOverview = () => {
               id="new-todo"
               value={newTodo.task}
               onInput={(event: React.FormEvent<HTMLInputElement>) => {
+                setIsValid({
+                  ...isValid,
+                  task: {
+                    dirty: true,
+                    valid: event.currentTarget.value.length > 0,
+                  },
+                })
                 setNewTodo({ ...newTodo, task: event.currentTarget.value })
               }}
             />
@@ -113,6 +123,13 @@ export const TodoOverview = () => {
                 id="category"
                 value={newTodo.category}
                 onChange={(event: React.FormEvent<HTMLSelectElement>) => {
+                  setIsValid({
+                    ...isValid,
+                    task: {
+                      dirty: true,
+                      valid: event.currentTarget.value !== 'choose',
+                    },
+                  })
                   setNewTodo({
                     ...newTodo,
                     category: event.currentTarget.value,
