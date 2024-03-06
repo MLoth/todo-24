@@ -9,8 +9,6 @@ import TodoItem from '../components/TodoItem'
 import TodoInput from '../components/TodoInput'
 
 export const TodoOverview = () => {
-  // TODO: remove item from list when checked (delayed by 3 seconds)
-  // TODO: release better version (v1.1.0)
   const [todos, setTodos] = useState<Todo[]>(
     localStorage.todos ? JSON.parse(localStorage.todos) : [],
   )
@@ -36,7 +34,6 @@ export const TodoOverview = () => {
 
   return (
     <div className="flex flex-col min-h-screen mx-auto max-w-2xl px-6">
-      {/* Header: amount of todo & welcome message */}
       <div className="flex items-center justify-between">
         <AppHeader
           title="Hello, Marty!"
@@ -67,7 +64,6 @@ export const TodoOverview = () => {
         </div>
       </div>
 
-      {/* Footer: about the app (c) Martijn - CURRENT YEAR */}
       <AppFooter />
     </div>
   )

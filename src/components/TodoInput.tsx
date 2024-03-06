@@ -25,6 +25,7 @@ const TodoInput = ({
       valid: false,
     },
   })
+
   const [newTodo, setNewTodo] = useState<Todo>(emptyTodo)
 
   const addNewTodo = (event: React.FormEvent<HTMLFormElement>) => {

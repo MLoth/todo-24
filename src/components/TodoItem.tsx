@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Todo } from '../models/Todo'
 
 import { Check, Trash } from 'lucide-react'
@@ -11,6 +12,25 @@ const TodoItem = ({
   toggle: (id: string) => void
   remove: (id: string) => void
 }) => {
+  const [timeoutId, setTimeoutId] = useState<number | null>()
+
+  const handleToggle = async () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+      setTimeoutId(null)
+    }
+    toggle(todo.id!)
+
+    const id = setTimeout(() => {
+      if (todo.isCompleted) return
+
+      remove(todo.id!) // remove after x seconds
+      setTimeoutId(null)
+    }, 3000)
+
+    setTimeoutId(id)
+  }
+
   return (
     <div
       className={`flex items-center justify-between gap-6 bg-white shadow py-2 px-6 rounded-2xl ${todo.isCompleted ? 'opacity-50' : ''}`}
@@ -20,7 +40,7 @@ const TodoItem = ({
         className="sr-only peer"
         type="checkbox"
         id={todo.id}
-        onChange={() => toggle(todo.id!)}
+        onChange={handleToggle}
         checked={todo.isCompleted}
       />
       <label
