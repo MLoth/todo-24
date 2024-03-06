@@ -4,7 +4,11 @@ import { ChevronDown, Plus } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
 
-const TodoInput = () => {
+const TodoInput = ({
+  addToParentState,
+}: {
+  addToParentState: (todo: Todo) => void
+}) => {
   const emptyTodo: Todo = {
     task: '',
     category: 'choose',
@@ -31,7 +35,7 @@ const TodoInput = () => {
     setNewTodo(() => {
       const currentNewTodo = { ...newTodo, id: uid() }
       // TODO: handle this in the parent component
-      setTodos([...todos, currentNewTodo]) // Combineer de huidige todos met de nieuwe todo
+      addToParentState(currentNewTodo) // Laat dit afhandelen door de parent component
       // This might confuse some developers.
       return emptyTodo
     }) // Maak een unieke id aan voor het opslaan van deze nieuwe todo

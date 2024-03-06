@@ -6,12 +6,11 @@ import { Todo } from '../models/Todo'
 import { AppFooter } from '../components/AppFooter'
 import { AppHeader } from '../components/AppHeader'
 import TodoItem from '../components/TodoItem'
+import TodoInput from '../components/TodoInput'
 
 export const TodoOverview = () => {
   // TODO: remove item from list when checked (delayed by 3 seconds)
-
   // TODO: release better version (v1.1.0)
-
   const [todos, setTodos] = useState<Todo[]>(
     localStorage.todos ? JSON.parse(localStorage.todos) : [],
   )
@@ -52,7 +51,9 @@ export const TodoOverview = () => {
       </div>
 
       <div className="flex-1">
-        {/* TODO: move to TodoInput.tsx */}
+        <TodoInput
+          addToParentState={(newTodo: Todo) => setTodos([...todos, newTodo])}
+        />
 
         <div className="flex flex-col gap-3">
           {todos.map((todo: Todo) => (
