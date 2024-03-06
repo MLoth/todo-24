@@ -101,7 +101,7 @@ export const TodoOverview = () => {
             <input
               className={`block w-full border border-neutral-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1 text-lg ${
                 !isValid.task.valid && isValid.task.dirty
-                  ? 'border-red-500 placeholder:text-red-500 focus:ring-red-700'
+                  ? 'border-red-500 placeholder:text-red-300 focus:ring-red-700'
                   : ''
               }`}
               placeholder="Add a new todo..."
@@ -119,12 +119,21 @@ export const TodoOverview = () => {
                 })
                 setNewTodo({ ...newTodo, task: event.currentTarget.value })
               }}
+              onBlur={(event: React.FormEvent<HTMLInputElement>) => {
+                setIsValid({
+                  ...isValid,
+                  task: {
+                    dirty: true,
+                    valid: event.currentTarget.value.length > 0,
+                  },
+                })
+              }}
             />
             <div className="flex justify-between items-center relative w-fit">
               <select
                 className={`appearance-none w-full py-1 px-3 text-sm border pr-7 border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-semibold placeholder:text-neutral-400 ${
                   !isValid.category.valid && isValid.category.dirty
-                    ? 'border-red-500 placeholder:text-red-500'
+                    ? 'border-red-500 placeholder:text-red-500 text-red-500 focus:ring-red-700'
                     : ''
                 }`}
                 name="category"
@@ -143,6 +152,15 @@ export const TodoOverview = () => {
                     category: event.currentTarget.value,
                   })
                 }}
+                onBlur={(event: React.FormEvent<HTMLSelectElement>) => {
+                  setIsValid({
+                    ...isValid,
+                    category: {
+                      dirty: true,
+                      valid: event.currentTarget.value !== 'choose',
+                    },
+                  })
+                }}
               >
                 <option disabled value={'choose'}>
                   Choose a category.
@@ -151,7 +169,13 @@ export const TodoOverview = () => {
                 <option value="work">Work</option>
                 <option value="nevenactiviteiten">Nevenactiviteiten</option>
               </select>
-              <ChevronDown className="absolute right-0 mr-1 pointer-events-none stroke-current text-neutral-400" />
+              <ChevronDown
+                className={`absolute right-0 mr-1 pointer-events-none stroke-current text-neutral-400 ${
+                  !isValid.category.valid && isValid.category.dirty
+                    ? 'text-red-500'
+                    : ''
+                }`}
+              />
             </div>
           </div>
         </form>
