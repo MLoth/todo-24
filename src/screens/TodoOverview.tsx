@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { uid } from 'uid'
-import { Check, ChevronDown, Plus, Settings, Trash } from 'lucide-react'
+import { ChevronDown, Plus, Settings } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
 import { AppFooter } from '../components/AppFooter'
 import { AppHeader } from '../components/AppHeader'
+import TodoItem from '../components/TodoItem'
 
 export const TodoOverview = () => {
   const emptyTodo: Todo = {
@@ -14,8 +15,6 @@ export const TodoOverview = () => {
     isCompleted: false,
   }
   // TODO: remove item from list when checked (delayed by 3 seconds)
-  // TODO: show error message when input fields are empty
-  // TODO: make the input fields required (input validation - visible)
 
   // TODO: release better version (v1.1.0)
   const [isValid, setIsValid] = useState({
@@ -182,35 +181,12 @@ export const TodoOverview = () => {
 
         <div className="flex flex-col gap-3">
           {todos.map((todo: Todo) => (
-            <div
-              className={`flex items-center justify-between gap-6 bg-white shadow py-2 px-6 rounded-2xl ${todo.isCompleted ? 'opacity-50' : ''}`}
-              key={todo.id}
-            >
-              <input
-                className="sr-only peer"
-                type="checkbox"
-                id={todo.id}
-                onChange={() => toggleTodo(todo.id!)}
-                checked={todo.isCompleted}
-              />
-              <label
-                className="flex items-center justify-center peer-checked:bg-blue-500 peer-checked:text-blue-100 rounded-full cursor-pointer p-2 border border-neutral-200 focus:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 focus:border-transparent hover:text-blue-500 hover:bg-blue-100 text-neutral-200"
-                htmlFor={todo.id}
-              >
-                <Check className="stroke-current stroke-4" />
-              </label>
-              <div className="flex-1">
-                <p>{todo.task}</p>
-                <p className="">{todo.category}</p>
-              </div>
-
-              <button
-                className="text-red-500 opacity-30 hover:opacity-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus:border-transparent hover:text-red-600 hover:bg-neutral-50 focus-visible:opacity-100"
-                onClick={() => deleteTodo(todo.id!)}
-              >
-                <Trash className="stroke-current" />
-              </button>
-            </div>
+            <TodoItem
+              key={todo.id!}
+              todo={todo}
+              toggle={toggleTodo}
+              remove={deleteTodo}
+            />
           ))}
         </div>
         {/* TODO: show message when there a no todos */}
