@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, ChevronDown, Plus, Settings, Trash } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
@@ -8,12 +8,18 @@ import { uid } from 'uid'
 import { Link } from 'react-router-dom'
 
 export const TodoOverview = () => {
-  const [todos, setTodos] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>(
+    localStorage.todos ? JSON.parse(localStorage.todos) : [],
+  )
   const [newTodo, setNewTodo] = useState<Todo>({
     task: '',
     category: 'choose',
     isCompleted: false,
   })
+
+  useEffect(() => {
+    localStorage.todos = JSON.stringify(todos)
+  }, [todos])
 
   const addNewTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault() // Stop posting naar zelfde pagina
