@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Check, ChevronDown, Plus, Settings, Trash } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
@@ -26,10 +26,6 @@ export const TodoOverview = () => {
       return currentNewTodo
     }) // Maak een unieke id aan voor het opslaan van deze nieuwe todo
   }
-
-  // useEffect(() => {
-  //   console.log({ newTodo })
-  // }, [newTodo])
 
   return (
     <div className="flex flex-col min-h-screen mx-auto max-w-2xl px-6">
