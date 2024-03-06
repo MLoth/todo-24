@@ -1,25 +1,49 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { uid } from 'uid'
 import { Check, ChevronDown, Plus, Settings, Trash } from 'lucide-react'
 
 import { Todo } from '../models/Todo'
 import { AppFooter } from '../components/AppFooter'
 import { AppHeader } from '../components/AppHeader'
-import { uid } from 'uid'
-import { Link } from 'react-router-dom'
 
 export const TodoOverview = () => {
-  const [todos, setTodos] = useState<Todo[]>(
-    localStorage.todos ? JSON.parse(localStorage.todos) : [],
-  )
-  const [newTodo, setNewTodo] = useState<Todo>({
+  const emptyTodo: Todo = {
     task: '',
     category: 'choose',
     isCompleted: false,
-  })
+  }
+  // TODO: fade todo when checked
+  // TODO: remove item from list when checked (delayed by 3 seconds)
+  // TODO: show amount of todos by 'completed'
+  // TODO: show error message when input fields are empty
+  // TODO: make the input fields required (input validation - visible)
+
+  // TODO: release better version (v1.1.0)
+
+  const [todos, setTodos] = useState<Todo[]>(
+    localStorage.todos ? JSON.parse(localStorage.todos) : [],
+  )
+  const [newTodo, setNewTodo] = useState<Todo>(emptyTodo)
 
   useEffect(() => {
     localStorage.todos = JSON.stringify(todos)
   }, [todos])
+
+  const deleteTodo = (id: string) => {
+    const updatedTodos = todos.filter(todo => todo.id !== id)
+    setTodos(updatedTodos)
+  }
+
+  const toggleTodo = (id: string) => {
+    const updatedTodos = todos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, isCompleted: !todo.isCompleted }
+      }
+      return todo
+    })
+    setTodos(updatedTodos)
+  }
 
   const addNewTodo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault() // Stop posting naar zelfde pagina
@@ -29,7 +53,8 @@ export const TodoOverview = () => {
     setNewTodo(() => {
       const currentNewTodo = { ...newTodo, id: uid() }
       setTodos([...todos, currentNewTodo]) // Combineer de huidige todos met de nieuwe todo
-      return currentNewTodo
+      // This might confuse some developers.
+      return emptyTodo
     }) // Maak een unieke id aan voor het opslaan van deze nieuwe todo
   }
 
@@ -98,10 +123,16 @@ export const TodoOverview = () => {
         <div className="flex flex-col gap-3">
           {todos.map((todo: Todo) => (
             <div
-              className="flex items-center justify-between gap-6 bg-white shadow py-2 px-6 rounded-2xl"
+              className={`flex items-center justify-between gap-6 bg-white shadow py-2 px-6 rounded-2xl ${todo.isCompleted ? 'opacity-50' : ''}`}
               key={todo.id}
             >
-              <input className="sr-only peer" type="checkbox" id={todo.id} />
+              <input
+                className="sr-only peer"
+                type="checkbox"
+                id={todo.id}
+                onChange={() => toggleTodo(todo.id!)}
+                checked={todo.isCompleted}
+              />
               <label
                 className="flex items-center justify-center peer-checked:bg-blue-500 peer-checked:text-blue-100 rounded-full cursor-pointer p-2 border border-neutral-200 focus:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 focus:border-transparent hover:text-blue-500 hover:bg-blue-100 text-neutral-200"
                 htmlFor={todo.id}
@@ -113,7 +144,10 @@ export const TodoOverview = () => {
                 <p className="">{todo.category}</p>
               </div>
 
-              <button className="text-red-500 opacity-30 hover:opacity-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus:border-transparent hover:text-red-600 hover:bg-neutral-50 focus-visible:opacity-100">
+              <button
+                className="text-red-500 opacity-30 hover:opacity-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus:border-transparent hover:text-red-600 hover:bg-neutral-50 focus-visible:opacity-100"
+                onClick={() => deleteTodo(todo.id!)}
+              >
                 <Trash className="stroke-current" />
               </button>
             </div>
