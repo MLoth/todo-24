@@ -99,7 +99,11 @@ export const TodoOverview = () => {
 
           <div className="w-full">
             <input
-              className="block w-full border border-neutral-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1 text-lg"
+              className={`block w-full border border-neutral-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1 text-lg ${
+                !isValid.task.valid && isValid.task.dirty
+                  ? 'border-red-500 placeholder:text-red-500 focus:ring-red-700'
+                  : ''
+              }`}
               placeholder="Add a new todo..."
               type="text"
               name="new-todo"
@@ -118,14 +122,18 @@ export const TodoOverview = () => {
             />
             <div className="flex justify-between items-center relative w-fit">
               <select
-                className="appearance-none w-full py-1 px-3 text-sm border pr-7 border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-semibold placeholder:text-neutral-400"
+                className={`appearance-none w-full py-1 px-3 text-sm border pr-7 border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-semibold placeholder:text-neutral-400 ${
+                  !isValid.category.valid && isValid.category.dirty
+                    ? 'border-red-500 placeholder:text-red-500'
+                    : ''
+                }`}
                 name="category"
                 id="category"
                 value={newTodo.category}
                 onChange={(event: React.FormEvent<HTMLSelectElement>) => {
                   setIsValid({
                     ...isValid,
-                    task: {
+                    category: {
                       dirty: true,
                       valid: event.currentTarget.value !== 'choose',
                     },
